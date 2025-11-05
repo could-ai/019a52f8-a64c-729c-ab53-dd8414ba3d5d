@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:couldai_user_app/screens/home_screen.dart';
 
 class ResultsScreen extends StatelessWidget {
   final int score;
@@ -17,6 +18,16 @@ class ResultsScreen extends StatelessWidget {
     }
   }
 
+  Color _getScoreColor() {
+    if (score <= 4) {
+      return Colors.green;
+    } else if (score <= 9) {
+      return Colors.orange;
+    } else {
+      return Colors.red;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,18 +36,18 @@ class ResultsScreen extends StatelessWidget {
       ),
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(24.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               const Text(
                 'Your Score:',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10),
               Text(
                 '$score',
-                style: const TextStyle(fontSize: 60, fontWeight: FontWeight.bold, color: Colors.blue),
+                style: TextStyle(fontSize: 80, fontWeight: FontWeight.bold, color: _getScoreColor()),
               ),
               const SizedBox(height: 30),
               Text(
@@ -44,12 +55,25 @@ class ResultsScreen extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: const TextStyle(fontSize: 18),
               ),
-              const SizedBox(height: 40),
-              ElevatedButton(
+              const SizedBox(height: 20),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0),
+                child: Text(
+                  'Disclaimer: This is not a medical diagnosis. If you are concerned about your mental health, please consult a healthcare professional.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 14, color: Colors.grey),
+                ),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton.icon(
                 onPressed: () {
-                  Navigator.popUntil(context, (route) => route.isFirst);
+                  Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) => const HomeScreen()),
+                    (Route<dynamic> route) => false,
+                  );
                 },
-                child: const Text('Take Again'),
+                icon: const Icon(Icons.refresh),
+                label: const Text('Take Again'),
               ),
             ],
           ),
